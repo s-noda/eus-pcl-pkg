@@ -31,6 +31,9 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 find_package(Eigen REQUIRED)
 include_directories(${Eigen_INCLUDE_DIRS})
 
+find_package(PCL REQUIRED)
+include_directories(${PCL_INCLUDE_DIRS})
+
 rosbuild_find_ros_package(euslisp)
 include_directories(/usr/include /usr/X11R6/include ${euslisp_PACKAGE_PATH}/jskeus/eus/include)
 
@@ -46,7 +49,7 @@ if(${CMAKE_SYSTEM_PROCESSOR} MATCHES amd64* OR
 else()
  add_definitions(-Di486)
 endif()
-add_definitions(-D__PCL_SELECT=17)
+
 rosbuild_add_compile_flags(eus_pcl ${COMPILE_FLAGS})
 
 set_target_properties(eus_pcl PROPERTIES PREFIX "" SUFFIX ".so")
