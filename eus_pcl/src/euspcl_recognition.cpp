@@ -3,7 +3,7 @@
 
 #if __PCL_SELECT == 0
 #include <pcl/features/impl/fpfh.hpp>
-#include <pcl/recognition/impl/implicit_shape_model.hpp>
+//#include <pcl/recognition/impl/implicit_shape_model.hpp>
 using namespace pcl;
 #elif __PCL_SELECT == 17
 #include <pcl17/features/impl/fpfh.hpp>
@@ -11,6 +11,7 @@ using namespace pcl;
 using namespace pcl17;
 #endif
 
+#if 0
 // applications
 pointer PCL_ISM_TRAINING (register context *ctx, int n, pointer *argv) {
   //
@@ -221,5 +222,4 @@ pointer PCL_ISM_DETECTION (register context *ctx, int n, pointer *argv) {
 #endif
   return NIL;
 }
-
-
+#endif

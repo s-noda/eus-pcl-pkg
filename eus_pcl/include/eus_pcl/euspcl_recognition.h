@@ -5,7 +5,7 @@
 #include <pcl/features/feature.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/features/fpfh.h>
-#include <pcl/recognition/implicit_shape_model.h>
+//#include <pcl/recognition/implicit_shape_model.h>
 #elif __PCL_SELECT == 17
 #include <pcl17/features/feature.h>
 #include <pcl17/features/normal_3d.h>

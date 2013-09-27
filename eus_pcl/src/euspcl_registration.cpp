@@ -48,7 +48,8 @@ pointer PCL_REGISTRATION_RAW (register context *ctx, int n, pointer *argv) {
   Points::Ptr b_ptr =
     make_pcl_pointcloud< Point > (ctx, b_points, NULL, NULL, NULL, b_width, b_height);
 
-  Registration< Point, Point, float >::Ptr icp;
+  //Registration< Point, Point, float >::Ptr icp;
+  Registration< Point, Point >::Ptr icp;
 
   switch (icp_type) {
   case REGIST_SVD:
@@ -58,10 +59,12 @@ pointer PCL_REGISTRATION_RAW (register context *ctx, int n, pointer *argv) {
     icp.reset (new IterativeClosestPointNonLinear< Point, Point >());
     break;
   case REGIST_GICP:
-    icp.reset (new GeneralizedIterativeClosestPoint< Point, Point >());
+    std::cerr << ";; GICP not implimented" << std::endl;
+    //icp.reset (new GeneralizedIterativeClosestPoint< Point, Point >());
     break;
   case REGIST_NDT:
-    icp.reset (new NormalDistributionsTransform< Point, Point >());
+    std::cerr << ";; NDT not implimented" << std::endl;
+    //icp.reset (new NormalDistributionsTransform< Point, Point >());
     break;
   default:
     // warning
