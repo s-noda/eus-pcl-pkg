@@ -7,11 +7,6 @@
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/eus_pcl</url>
 
-  <!-- using pcl_perception -->
-  <!--depend package="pcl"/-->
-
-  <!-- using pcl_perception_unstable -->
-  <depend package="pcl17"/>
-
-  <!--rosdep name="pcl"/-->
+  <depend package="roscpp" />
+  <depend package="pcl" />
 </package>
