@@ -66,7 +66,9 @@ pointer PCL_EXTRACT_EUCLIDEAN_CLUSTERS (register context *ctx, int n, pointer *a
   euc_ext.setSearchMethod (tree);
   euc_ext.extract (cluster_indices);
 
+  // std::cout << "test1" << std::endl ;
   if (return_indices) {
+    // std::cout << "test1.2" << std::endl ;
     ret = makevector(C_INTVECTOR, width * height);
     vpush (ret); pc++;
     eusinteger_t *ret_vec = ret->c.ivec.iv;
@@ -77,10 +79,11 @@ pointer PCL_EXTRACT_EUCLIDEAN_CLUSTERS (register context *ctx, int n, pointer *a
         ret_vec[ cluster_indices[i].indices[j] ] = i;
       }
     }
-  } else {
+  } else if (cluster_indices.size() > 0){
     for (size_t i = cluster_indices.size() - 1; i > 0; i--) {
       size_t vec_size = cluster_indices[i].indices.size();
       pointer tmp_vec = makevector (C_INTVECTOR, vec_size);
+      // std::cout << vec_size << std::endl ;
       vpush (tmp_vec); pc++;
       ret = rawcons (ctx, tmp_vec, ret);
       vpush (ret);
@@ -89,7 +92,7 @@ pointer PCL_EXTRACT_EUCLIDEAN_CLUSTERS (register context *ctx, int n, pointer *a
       }
     }
   }
-
+  // std::cout << "test2" << std::endl ;
   while (pc-- > 0) vpop();
   return ret;
 }
@@ -116,7 +119,7 @@ pointer PCL_EXTRACT_PLANES (register context *ctx, int n, pointer *argv) {
   tolerance = 0.04;
   distance_threshold = 0.015;
 
-  ckarg2(1, 4);
+  ckarg2(1, 6);
   if (!isPointCloud (argv[0])) {
     error(E_TYPEMISMATCH);
     return ret;

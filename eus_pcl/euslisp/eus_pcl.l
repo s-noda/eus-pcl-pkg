@@ -36,7 +36,7 @@
 (defvar pcl::*REGIST_NDT*  3)
 
 (defun make-random-pointcloud
-  (&key (num 1000) (with-color)
+  (&key (num 1000) (with-color t)
         (with-normal) (scale 100.0))
   (let (pts col nom ret)
     (dotimes (i num)
@@ -51,6 +51,56 @@
     (setq ret (instance pointcloud :init
                         :points pts :colors col :normals nom))
     ret))
+
+(defun make-random-plane-pointcloud
+  (&key (num 1000) (with-color t)
+	(normal-vector (normalize-vector (random-vector 1.0)))
+	(rep-pos #F(0 0 0))
+	(noize 1e-3)
+        (with-normal)
+	(scale 100.0))
+  (let (pts col nom ret buf1 buf2)
+    (dotimes (i num)
+      (setq buf1 (random-vector scale))
+      (setq buf2
+	    (scale (v. normal-vector (v- rep-pos buf1)) normal-vector))
+      (setq buf1 (v+ buf1 buf2))
+      (push (v+ buf1 (scale noize buf2)) pts))
+    (when with-color
+      (let ((mid (float-vector 0.5 0.5 0.5)))
+        (dotimes (i num)
+          (push (v+ mid (random-vector 1.0)) col))))
+    (when with-normal
+      (dotimes (i num)
+        (push (normalize-vector (random-vector 1.0)) nom)))
+    (setq ret (instance pointcloud :init
+                        :points pts :colors col :normals nom))
+    ret))
+
+(defmethod pointcloud
+  (:append
+   (b)
+   (instance pointcloud :init
+	     :points (append (send self :point-list) (send b :point-list))
+	     :colors (append (send self :color-list) (send b :color-list))
+	     :normals (append (send self :normal-list) (send b :normal-list)))))
+
+(defun remove-all-plane
+  (&key
+   (pcd (send (make-random-plane-pointcloud) :append (make-random-pointcloud)))
+   (plane-detect (pcl::extract-planes pcd))
+   (points (send pcd :points))
+   (colors (send pcd :colors))
+   (normals (send pcd :normals)))
+  (mapcar
+   #'(lambda (id-list)
+       (map cons
+	    #'(lambda (id)
+		(dotimes (i 3) (setf (aref colors id i) 1)))
+	    id-list))
+   (cadr plane-detect))
+  (instance pointcloud :init
+	    :points points :colors colors :normals normals))
 
 #|
 ;; pcd files were downloaded from pointclouds.org
